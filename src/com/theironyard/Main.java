@@ -44,9 +44,10 @@ public class Main {
         stmt.setString(2, user.address);
         stmt.setString(3, user.email);
         stmt.setInt(4, user.id);
+        stmt.execute();
     }
 
-    public static void deleteEntry(Connection conn, int id) throws SQLException {
+    public static void deleteUser(Connection conn, int id) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM users WHERE id = ?");
         stmt.setInt(1, id);
         stmt.execute();
@@ -77,6 +78,24 @@ public class Main {
                     JsonParser p = new JsonParser();
                     User user = p.parse(body, User.class);
                     insertUser(conn, user);
+                    return "";
+                }
+        );
+        Spark.put(
+                "/user",
+                (request, response) -> {
+                    String body = request.body();
+                    JsonParser p = new JsonParser();
+                    User user = p.parse(body, User.class);
+                    updateUser(conn, user);
+                    return "";
+                }
+        );
+        Spark.delete(
+                "/user/:id",
+                (request, response) -> {
+                    int id = Integer.valueOf(request.params(":id"));
+                    deleteUser(conn, id);
                     return "";
                 }
         );

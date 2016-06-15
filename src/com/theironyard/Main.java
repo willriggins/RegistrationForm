@@ -35,6 +35,7 @@ public class Main {
         stmt.setString(1, user.username);
         stmt.setString(2, user.address);
         stmt.setString(3, user.email);
+        stmt.execute();
     }
 
     public static void updateUser(Connection conn, User user) throws SQLException {

@@ -23,13 +23,11 @@ public class MainTest {
     @Test
     public void testUsers() throws SQLException {
         Connection conn = startConnection();
-        User alice = new User(1, "Alice", "17A Princess St", "Alice@gov.com");
-        Main.insertUser(conn, alice);
-
+        User user = new User(1, "Alice", "17A Princess St", "Alice@gov.com");
+        Main.insertUser(conn, user);
         ArrayList<User> users = Main.selectUsers(conn);
         conn.close();
-        assertTrue(alice != null);
-
+        assertTrue(users.size() == 1);
     }
 
 

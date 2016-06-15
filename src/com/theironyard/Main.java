@@ -1,5 +1,6 @@
 package com.theironyard;
 
+import jodd.json.JsonParser;
 import jodd.json.JsonSerializer;
 import org.h2.tools.Server;
 import spark.Spark;
@@ -68,12 +69,16 @@ public class Main {
                     return s.serialize(users);
                 }
         );
-//        Spark.post(
-//                "/user",
-//                (request, response) -> {
-////                    String body = request.body()
-//                }
-//        );
+        Spark.post(
+                "/user",
+                (request, response) -> {
+                    String body = request.body();
+                    JsonParser p = new JsonParser();
+                    User user = p.parse(body, User.class);
+                    insertUser(conn, user);
+                    return "";
+                }
+        );
     }
 
 }
